@@ -23,12 +23,50 @@ def show_menu():
     
     option = input("Enter option: ")
     return option
+
+#helper function
+def get_record():
+    print("")
+    first = input("Enter first name > ")
+    last = input("Enter last name > ")
     
-def main_loop():
+    try:            # variable doc should hold a cursor object if we're able to find our record.
+        doc = coll.find_one({'first': first.lower(), 'last': last.lower()}) #whatever mix of case we put in our input, it'll convert it to lowercase, which will find it in our database.
+    except:
+        print("Error accessing the database")
+        
+    if not doc:     #if document not found..print blank line..then..Error
+        print("")
+        print("Error! No results found!")
+        
+    return doc
+    
+def add_record():
+    print("")                                #prompt us to enter this information and store it in each of these variables below.
+    first = input("Enter first name > ")
+    last = input("Enter last name > ")
+    dob = input("Enter date of birth > ")
+    gender = input("Enter gender > ")
+    hair_colour = input("Enter hair colour > ")
+    occupation = input("Enter occupation > ")
+    nationality = input("Enter nationality > ")
+    
+    new_doc = {'first': first.lower(), 'last': last.lower(), 'dob': dob, 'gender': gender, 'hair_colour': hair_colour, 'occupation': occupation, 'nationality': nationality}     #first,lastname in lowercase..makes easier to find
+    
+    
+    try:
+        coll.insert(new_doc)                                    #document dictionary
+        print("")
+        print("Document inserted")                              #all goes well...document inserted
+    except:
+        print("Error acessing the database")        
+    
+    
+def main_loop():                
     while True:
         option = show_menu()
         if option == "1":
-            print("You have selected option 1")
+            add_record()
         elif option == "2":
             print("You have selected option 2")
         elif option == "3":
