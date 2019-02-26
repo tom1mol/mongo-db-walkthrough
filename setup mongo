@@ -1,0 +1,23 @@
+wget -q https://git.io/fh7vV -O /tmp/setupmongodb.sh && source /tmp/setupmongodb.sh         remove old version and install new
+
+sudo pip3 install dnspython             install extra libraries so python/mongo library will work
+
+sudo pip3 install pymongo               install python/mongo library called pymongo(version3)
+
+
+type:
+cd ..                   to go up a directory
+
+nano .bashrc            opens fie in nano editor
+
+insert near the top(in nano .bashrc):
+export MONGO_URI="mongodb+srv://shoot:<password>@myfirstcluster-tjr5r.mongodb.net/myTestDB?retryWrites=true"
+(ended up with a problem here where i forgot closing " .   i ended up stuck in ubuntu but i was able 
+to open the .bashrc file and inserft the missing " and i got back to bash.
+
+in bash:
+echo $MONGO_URI
+output:
+mongodb+srv://shoot:<PASSWORD>@myfirstcluster-tjr5r.mongodb.net/myTestDB?retryWrites=true
+
+mongo "mongodb+srv://myfirstcluster-tjr5r.mongodb.net/myTestDB" --username shoot
