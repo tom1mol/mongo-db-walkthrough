@@ -24,18 +24,20 @@ def show_menu():
     option = input("Enter option: ")
     return option
 
-#helper function
+#searches to find/edit/delete records are based on NAME
+#helper function. store first name first, last name last,
 def get_record():
     print("")
     first = input("Enter first name > ")
     last = input("Enter last name > ")
     
     try:            # variable doc should hold a cursor object if we're able to find our record.
-        doc = coll.find_one({'first': first.lower(), 'last': last.lower()}) #whatever mix of case we put in our input, it'll convert it to lowercase, which will find it in our database.
+        doc = coll.find_one({'first': first.lower(), 'last': last.lower()})     # our key is 'first'
+                                #whatever mix of case we put in our input, it'll convert it to lowercase, which will find it in our database.
     except:
         print("Error accessing the database")
         
-    if not doc:     #if document not found..print blank line..then..Error
+    if not doc:     #if document not found(empty)..print blank line..then..Error
         print("")
         print("Error! No results found!")
         
@@ -58,10 +60,21 @@ def add_record():
     try:
         coll.insert(new_doc)                                    #document dictionary
         print("")
-        print("Document inserted")                              #all goes well...document inserted
+        print("Document inserted")                              #all goes well...print document inserted
     except:
-        print("Error acessing the database")        
-    
+        print("Error acessing the database")   
+        
+        
+        
+
+def find_record():
+    doc = get_record()
+    if doc:                 #if there's results...print blank line first
+        print("")           #k,v = keys,values
+        for k,v in doc.items(): #calling the items method here to step through each individual value in our dictionary.
+            if k != "_id":      #  check if key is not equal to ID. ID is default key created by MONGO
+                print(k.capitalize() + ": " + v.capitalize())       #capitalize..first letter capitalized
+                
     
 def main_loop():                
     while True:
@@ -69,7 +82,7 @@ def main_loop():
         if option == "1":
             add_record()
         elif option == "2":
-            print("You have selected option 2")
+            find_record()
         elif option == "3":
             print("You have selected option 3")
         elif option == "4":
