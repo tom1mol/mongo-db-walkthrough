@@ -51,6 +51,7 @@ def add_record():
     occupation = input("Enter occupation > ")
     nationality = input("Enter nationality > ")
     
+    #dictionary to insert into database
     new_doc = {'first': first.lower(), 'last': last.lower(), 'dob': dob, 'gender': gender, 'hair_colour': hair_colour, 'occupation': occupation, 'nationality': nationality}     #first,lastname in lowercase..makes easier to find
     
     
