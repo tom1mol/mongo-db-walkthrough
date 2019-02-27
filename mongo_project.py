@@ -75,6 +75,54 @@ def find_record():
             if k != "_id":      #  check if key is not equal to ID. ID is default key created by MONGO
                 print(k.capitalize() + ": " + v.capitalize())       #capitalize..first letter capitalized
                 
+                
+
+def edit_record():
+    doc = get_record()      #store results of get_record function in doc
+    if doc:                 #check to see if something is in the dictionary
+        update_doc={}   #create empty dictionary called update_doc. we will add to that dictionary. We're going to build that as we go on to                 iterate through our keys and our values.
+                        #That dictionary forms the basis of what we're going to use and insert into the database.
+        print("")
+        for k, v in doc.items():        #iterate through using k, v
+            if k != "_id":              #filter out ID field as we dont want to edit that
+                update_doc[k] = input(k.capitalize() + " [" + v + "] > ")
+                #add to update_doc dictionary..provide the key for it..and the value(v) will be = our input. we want the value to appear in these square brackets so that we can see what the current value of them is.We should get a prompt that contains both the key and what the value is currently set to.
+                
+                if update_doc[k] == "":   #if nothing is entered into update_doc(left blank)
+                    update_doc[k] = v       #leave it as it was before(dont delete it)
+                    
+        try:
+            coll.update_one(doc, {'$set': update_doc}) #current doc we want to update. dictionary we pass in is update_doc
+            print("")
+            print("Document updated")
+        except:
+            print("Error accessing the database")
+            
+
+def delete_record():
+    
+    doc = get_record()      #store results of get_record in doc
+    
+    if doc:     #check if any results are returned
+        print("")
+        for k,v in doc.items():     #iterate through and print each of the values to ensure we delete the right document
+            if k != "_id":          #filter out the ID(dont want to delete that)
+                print(k.capitalize() + ": " + v.capitalize())   #colon seperating key(k) and value(v) and capitalize 1st letter of each
+                
+        print("")
+        confirmation = input("Is this the document you want to delete?\nY or N > ")        #new var called confirmation. store results of input                                                                                 statement
+        print("")
+        
+        if confirmation.lower() == 'y':
+            try:
+                coll.remove(doc)
+                print("Document deleted!")
+            except:
+                print("Error accessing the database")
+        else:                                           #anything other than Y typed
+            print("Document not deleted")            #print this and return to main menu
+    
+    
     
 def main_loop():                
     while True:
@@ -84,9 +132,9 @@ def main_loop():
         elif option == "2":
             find_record()
         elif option == "3":
-            print("You have selected option 3")
+            edit_record()
         elif option == "4":
-            print("You have selected option 4")
+            delete_record()
         elif option == "5":
             conn.close()
             break
